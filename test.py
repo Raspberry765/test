@@ -10,7 +10,9 @@ phase=30*np.pi/180
 fs=32*fc
 t=np.arange(start=0,stop=2,step=1/fs)
 x=A*np.sin(2*np.pi*fc*t+phase)
+power_x=1/(fs)*sum(x**2)
 
+print("signal_power="+str(power_x))
 N=256
 X=fftshift(fft(x,N))
 X_dft=1/N*X
