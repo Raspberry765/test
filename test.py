@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt # library for plotting
 from scipy.fftpack import fft, ifft, fftshift, ifftshift
 np.set_printoptions(formatter={"float_kind":lambda x: "%g" % x})
 
-A=0.5
+A=1
 fc=10
 phase=30*np.pi/180
 fs=32*fc
@@ -24,13 +24,18 @@ X_zero[abs(X)<threshold]=0 # maskout values below the threshold
 phase_info_zero=np.arctan2(np.imag(X_zero),np.real(X_zero))*180/np.pi
 
 x_recon= N*ifft(ifftshift(X),N)
+
 t_axis_recon=np.arange(start=0, stop=len(x_recon))/fs
 
 df=fs/N
 sampleIndex= np.arange(start=-N/2,stop=N/2)
 f=sampleIndex*df
+
+Power_spectol=X*np.conj(X)/(N**2)
+
+
 # fig,(ax1,ax2,ax3,ax4) = plt.subplots(nrows=4, ncols=1)
-plt.subplot(4,1,1)
+plt.subplot(5,1,1)
 plt.plot(t,x)
 plt.title("$x[n]=0.5cos(2 \pi 10 t + \pi/6)$")
 plt.xlabel("time")
@@ -42,20 +47,20 @@ plt.ylabel("x(t)")
 # plt.show() # disply the figure
 
 
-plt.subplot(4,1,2)
+plt.subplot(5,1,2)
 plt.stem(f,abs(X_dft),use_line_collection=True)
 plt.xlim(-30,30)
 plt.title("abs(x[k])")
 plt.xlabel("frequency")
 plt.ylabel("amplitude")
 
-plt.subplot(4,1,3)
+plt.subplot(5,1,3)
 plt.plot(f,phase_info_zero)
 plt.title("Phase spectrum")
 plt.xlabel("k")
 plt.ylabel("$ \theta $")
 
-plt.subplot(4,1,4)
+plt.subplot(5,1,4)
 plt.plot(t_axis_recon,x_recon)
 plt.title("$x[n]=0.5cos(2 \pi 10 t + \pi/6)$")
 plt.xlabel("time")
@@ -64,6 +69,12 @@ plt.ylabel("x(t)")
 # plt.title("reconstruction $x[n]=0.5cos(2 \pi 10 t)$")
 # plt.xlabel("time")
 # plt.ylabel("x(t)")
+
+plt.subplot(5,1,5)
+plt.stem(f,Power_spectol)
+plt.title("Power Spectrum")
+plt.xlabel("Frequency")
+plt.ylabel(" dB ")
 
 plt.show() # disply the figure
 
